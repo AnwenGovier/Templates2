@@ -24,9 +24,9 @@ def list_of_items(items):
     'money, a student handbook, laptop'
 
     """
-    a= []
-    for items in items:
-        a.append(items["name"])
+    a = []
+    for item in items:
+        a.append(item["name"])
        
     return ", ".join(a)
 
@@ -53,9 +53,12 @@ def print_room_items(room):
     Note: <BLANKLINE> here means that doctest should expect a blank line.
 
     """
-
-    print("There is " + list_of_items(room[items]) +" here." )
-    print()
+    b = room["items"]
+    if len(b) ==0:
+        return;
+    else:
+        print("There is " + list_of_items(room["items"]) +" here." )
+        print()
     
 
 def print_inventory_items(items):
