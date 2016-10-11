@@ -74,6 +74,7 @@ def print_inventory_items(items):
     """
     print("You have " + list_of_items(items) +"." )
     print()
+    
         
 
 
@@ -261,12 +262,10 @@ def remove_item_from_current_room(item_id, items):
         if item_id == id:
             inventory.append(i)
             
-            break
         else:
             new_items.append(i)
     current_room["items"] = new_items
 
-    print(current_room["items"])
     return False
        
 
@@ -292,7 +291,7 @@ def remove_item_from_inventory(item_id, items):
             new_inventory.append(i)
     inventory = new_inventory
 
-    print(current_room["items"])
+    
     return False
 
 
@@ -400,6 +399,7 @@ def main():
         # Display game status (room description, inventory etc.)
         print_room(current_room)
         print_inventory_items(inventory)
+        
 
         # Show the menu with possible actions and ask the player
         command = menu(current_room["exits"], current_room["items"], inventory)
