@@ -53,8 +53,8 @@ def print_room_items(room):
     Note: <BLANKLINE> here means that doctest should expect a blank line.
 
     """
-    
-    print("There is " + a + " here.")
+
+    print("There is " + list_of_items(room[items]) +" here." )
     print()
     
 
