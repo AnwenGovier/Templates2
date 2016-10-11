@@ -24,6 +24,7 @@ def list_of_items(items):
     'money, a student handbook, laptop'
 
     """
+
     a = []
     for item in items:
         a.append(item["name"])
@@ -243,13 +244,45 @@ def execute_go(direction):
     else:
         print("You cannot go there.")
 
+def is_item_in_list(item, items):
+    """This function takes an item as an imput and checks that the item is avalible 
+    in the room. if so then it returns True. Else it will return False"""
+    for i in items:
+        id = i["id"]
+        if item == id:
+            return True
+    return False
+
+def remove_item_from_current_room(item_id, items):
+    """This function removes an item from a room """
+    new_items = []
+    for i in items:
+        id = i["id"]
+        if item_id == id:
+            inventory.append(i)
+            #del current_room["items"][item_id]
+            break
+        else:
+            new_items.append(i)
+    current_room["items"] = new_items
+
+    print(current_room["items"])
+    return False
+        
+
+
 def execute_take(item_id):
     """This function takes an item_id as an argument and moves this item from the
-    list of items in the current room to the player's inventory. However, if
+    list of items in the current room to the player 's inventory. However, if
     there is no such item in the room, this function prints
     "You cannot take that."
     """
-    pass
+    global inventory
+    if is_item_in_list(item_id, current_room["items"]):
+        remove_item_from_current_room(item_id, current_room["items"])
+        return inventory
+    else:
+        print("You cannot take that.")
     
 
 def execute_drop(item_id):
