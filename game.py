@@ -24,12 +24,13 @@ def list_of_items(items):
     'money, a student handbook, laptop'
 
     """
-    
-    #rooms[exits[direction]]["name"]
-    pass
-    print(item_money["name"] + ", " + item_handbook["name"]+ ", " + item_laptop["name"])
+    a= []
+    for items in items:
+        a.append(items["name"])
+       
+    return ", ".join(a)
 
-
+        
 def print_room_items(room):
     """This function takes a room as an input and nicely displays a list of items
     found in this room (followed by a blank line). If there are no items in
@@ -52,8 +53,10 @@ def print_room_items(room):
     Note: <BLANKLINE> here means that doctest should expect a blank line.
 
     """
-    pass
-
+    
+    print("There is " + a + " here.")
+    print()
+    
 
 def print_inventory_items(items):
     """This function takes a list of inventory items and displays it nicely, in a
@@ -65,7 +68,9 @@ def print_inventory_items(items):
     <BLANKLINE>
 
     """
-    pass
+    print("You have " + list_of_items(items) +"." )
+    print()
+        
 
 
 def print_room(room):
@@ -121,10 +126,9 @@ def print_room(room):
     # Display room description
     print(room["description"])
     print()
+    print_room_items(room)
 
-    #
-    # COMPLETE ME!
-    #
+   
 
 def exit_leads_to(exits, direction):
     """This function takes a dictionary of exits and a direction (a particular
