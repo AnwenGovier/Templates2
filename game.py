@@ -199,14 +199,17 @@ def print_menu(exits, room_items, inv_items):
     for direction in exits:
         # Print the exit name and where it leads to
         print_exit(direction, exit_leads_to(exits, direction))
-
-    #
-    # COMPLETE ME!
-    #
+    
+    #iterate over avaliable items
+    for item in room_items:
+        print("TAKE " + item["id"].upper() + " to take " + item["name"] + ".")
+    
+    #iterate over droppable items
+    for item in inv_items:
+        print("DROP " + item["id"].upper() + " to drop " + item["name"] + ".")    
     
     print("What do you want to do?")
-
-
+ 
 def is_valid_exit(exits, chosen_exit):
     """This function checks, given a dictionary "exits" (see map.py) and
     a players's choice "chosen_exit" whether the player has chosen a valid exit.
@@ -232,8 +235,13 @@ def execute_go(direction):
     (and prints the name of the room into which the player is
     moving). Otherwise, it prints "You cannot go there."
     """
-    pass
-
+    global current_room
+    exits = current_room["exits"]
+    if is_valid_exit(exits, direction):
+        current_room = rooms[exits[direction]]
+        return current_room
+    else:
+        print("You cannot go there.")
 
 def execute_take(item_id):
     """This function takes an item_id as an argument and moves this item from the
