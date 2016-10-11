@@ -29,9 +29,10 @@ def filter_words(words, skip_words):
     """
     important_words = [];
     for word in words:
-        if word in skip_words: 
-            words.remove(word)
-    return words
+        if word not in skip_words: 
+            important_words.append(word)
+    return important_words
+    
 
     
 def remove_punct(text):
@@ -69,7 +70,7 @@ def normalise_input(user_input):
     >>> normalise_input("HELP!!!!!!!")
     ['help']
     >>> normalise_input("Now, drop the sword please.")
-    ['drop', 'sword']    
+    ['drop', 'sword']
     >>> normalise_input("Kill ~ tHe :-  gObLiN,. wiTH my SWORD!!!")
     ['kill', 'goblin', 'sword']
     >>> normalise_input("I would like to drop my laptop here.")
