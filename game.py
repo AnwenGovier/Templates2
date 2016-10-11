@@ -72,8 +72,12 @@ def print_inventory_items(items):
     <BLANKLINE>
 
     """
-    print("You have " + list_of_items(items) +"." )
-    print()
+    b = list_of_items(items)
+    if len(b) ==0:
+        return;
+    else:
+        print("You have " + list_of_items(items) +"." )
+        print()
     
         
 
