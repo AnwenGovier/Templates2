@@ -245,7 +245,7 @@ def execute_go(direction):
         print("You cannot go there.")
 
 def is_item_in_list(item, items):
-    """This function takes an item as an imput and checks that the item is avalible 
+    """This function takes an item as an input and checks that the item is avalible 
     in the room. if so then it returns True. Else it will return False"""
     for i in items:
         id = i["id"]
@@ -260,7 +260,7 @@ def remove_item_from_current_room(item_id, items):
         id = i["id"]
         if item_id == id:
             inventory.append(i)
-            #del current_room["items"][item_id]
+            
             break
         else:
             new_items.append(i)
@@ -268,7 +268,32 @@ def remove_item_from_current_room(item_id, items):
 
     print(current_room["items"])
     return False
-        
+       
+
+def is_item_in_inventory(item, items):
+    """This function takes an item as an input and checks that the item is avalible 
+    in the inventory. if so then it returns True. Else it will return False"""
+    for i in items:
+        id = i["id"]
+        if item == id:
+            return True
+    return False
+
+
+def remove_item_from_inventory(item_id, items):
+    """This function removes an item from the inventory """
+    new_inventory = []
+    global inventory
+    for i in items:
+        id = i["id"]
+        if item_id == id:
+            current_room["items"].append(i)
+        else:
+            new_inventory.append(i)
+    inventory = new_inventory
+
+    print(current_room["items"])
+    return False
 
 
 def execute_take(item_id):
@@ -290,8 +315,11 @@ def execute_drop(item_id):
     player's inventory to list of items in the current room. However, if there is
     no such item in the inventory, this function prints "You cannot drop that."
     """
-    pass
-    
+    if is_item_in_inventory(item_id, inventory):
+        remove_item_from_inventory(item_id, inventory)
+        return inventory
+    else:
+        print("You cannot take that.")
 
 def execute_command(command):
     """This function takes a command (a list of words as returned by
