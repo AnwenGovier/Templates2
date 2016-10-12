@@ -25,11 +25,12 @@ def list_of_items(items):
 
     """
 
-    a = []
+    list_of_items_avaliable = []
+
     for item in items:
-        a.append(item["name"])
+        list_of_items_avaliable.append(item["name"])
        
-    return ", ".join(a)
+    return ", ".join(list_of_items_avaliable)
 
         
 def print_room_items(room):
@@ -54,12 +55,12 @@ def print_room_items(room):
     Note: <BLANKLINE> here means that doctest should expect a blank line.
 
     """
-    b = room["items"]
-    if len(b) ==0:
+    list_of_items_in_room = room["items"]
+    if len(list_of_items_in_room) == 0:
         return;
     else:
         print("There is " + list_of_items(room["items"]) +" here." )
-        print()
+        print("")
     
 
 def print_inventory_items(items):
@@ -72,8 +73,9 @@ def print_inventory_items(items):
     <BLANKLINE>
 
     """
-    b = list_of_items(items)
-    if len(b) ==0:
+    list_of_items_in_inventory = list_of_items(items)
+    
+    if len(list_of_items_in_inventory) == 0:
         return;
     else:
         print("You have " + list_of_items(items) +"." )
@@ -129,12 +131,12 @@ def print_room(room):
     Note: <BLANKLINE> here means that doctest should expect a blank line.
     """
     # Display room name
-    print()
+    print("")
     print(room["name"].upper())
-    print()
+    print("")
     # Display room description
     print(room["description"])
-    print()
+    print("")
     print_room_items(room)
 
    
@@ -234,6 +236,59 @@ def is_valid_exit(exits, chosen_exit):
     """
     return chosen_exit in exits
 
+def is_item_in_list_provided(item, items):
+    """This function takes an item as an input and checks that the item is avalible 
+    in the room.
+    If it can find the item then it returns True if it can't then it will produce False."""
+    for i in items:
+        id = i["id"]
+        if item == id:
+            return True
+    return False
+
+def remove_the_wanted_item_from_current_room(item_id, items):
+    """This function will remove an item from the current room if it can find it in there.
+    if it can't then it will display an error message. 
+    If it can then it removes the item from the room and adds it to the users inventory"""
+    new_items = []
+    for i in items:
+        id = i["id"]
+        if item_id == id:
+            inventory.append(i)
+            
+        else:
+            new_items.append(i)
+    current_room["items"] = new_items
+
+    return False
+       
+
+def is_item_in_users_inventory(item, items):
+    """This function takes the input of a user and searches items to check that it can be found.
+    if it can then True is return. if it can't False is returned instead """
+    for i in items:
+        id = i["id"]
+        if item == id:
+            return True
+    return False
+
+
+def remove_the_item_from_users_inventory(item_id, items):
+    """This function removes an item from the global variable inventory 
+    and adds it the the items in the room; 
+    Provided that the item requested is in the items in inventory"""
+    new_inventory = []
+    global inventory
+    for i in items:
+        id = i["id"]
+        if item_id == id:
+            current_room["items"].append(i)
+        else:
+            new_inventory.append(i)
+    inventory = new_inventory
+
+    
+    return False
 
 def execute_go(direction):
     """This function, given the direction (e.g. "south") updates the current room
@@ -249,56 +304,6 @@ def execute_go(direction):
     else:
         print("You cannot go there.")
 
-def is_item_in_list(item, items):
-    """This function takes an item as an input and checks that the item is avalible 
-    in the room. if so then it returns True. Else it will return False"""
-    for i in items:
-        id = i["id"]
-        if item == id:
-            return True
-    return False
-
-def remove_item_from_current_room(item_id, items):
-    """This function removes an item from a room """
-    new_items = []
-    for i in items:
-        id = i["id"]
-        if item_id == id:
-            inventory.append(i)
-            
-        else:
-            new_items.append(i)
-    current_room["items"] = new_items
-
-    return False
-       
-
-def is_item_in_inventory(item, items):
-    """This function takes an item as an input and checks that the item is avalible 
-    in the inventory. if so then it returns True. Else it will return False"""
-    for i in items:
-        id = i["id"]
-        if item == id:
-            return True
-    return False
-
-
-def remove_item_from_inventory(item_id, items):
-    """This function removes an item from the inventory """
-    new_inventory = []
-    global inventory
-    for i in items:
-        id = i["id"]
-        if item_id == id:
-            current_room["items"].append(i)
-        else:
-            new_inventory.append(i)
-    inventory = new_inventory
-
-    
-    return False
-
-
 def execute_take(item_id):
     """This function takes an item_id as an argument and moves this item from the
     list of items in the current room to the player 's inventory. However, if
@@ -306,8 +311,8 @@ def execute_take(item_id):
     "You cannot take that."
     """
     global inventory
-    if is_item_in_list(item_id, current_room["items"]):
-        remove_item_from_current_room(item_id, current_room["items"])
+    if is_item_in_list_provided(item_id, current_room["items"]):
+        remove_the_wanted_item_from_current_room(item_id, current_room["items"])
         return inventory
     else:
         print("You cannot take that.")
@@ -318,8 +323,8 @@ def execute_drop(item_id):
     player's inventory to list of items in the current room. However, if there is
     no such item in the inventory, this function prints "You cannot drop that."
     """
-    if is_item_in_inventory(item_id, inventory):
-        remove_item_from_inventory(item_id, inventory)
+    if is_item_in_users_inventory(item_id, inventory):
+        remove_the_item_from_users_inventory(item_id, inventory)
         return inventory
     else:
         print("You cannot take that.")
@@ -404,7 +409,6 @@ def main():
         print_room(current_room)
         print_inventory_items(inventory)
         
-
         # Show the menu with possible actions and ask the player
         command = menu(current_room["exits"], current_room["items"], inventory)
 
