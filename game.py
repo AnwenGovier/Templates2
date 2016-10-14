@@ -327,7 +327,7 @@ def execute_drop(item_id):
         remove_the_item_from_users_inventory(item_id, inventory)
         return inventory
     else:
-        print("You cannot take that.")
+        print("You cannot drop that.")
 
 def execute_command(command):
     """This function takes a command (a list of words as returned by
